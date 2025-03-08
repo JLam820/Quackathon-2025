@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Image Rating</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .image-container {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #displayedImage {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .rating-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .rating-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #e3f2fd;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .rating-button:hover {
+            transform: scale(1.1);
+            background-color: #bbdefb;
+        }
+
+        .rating-button.selected {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        #progress {
+            margin-top: 20px;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+        }
+
+        #submit-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #submit-button:hover {
+            background-color: #45a049;
+        }
+
+        #submit-button.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img id="displayedImage" src="img/1.jpg" alt="Image">
+        </div>
+        <div class="rating-container">
+            <button class="rating-button" data-rating="1">1</button>
+            <button class="rating-button" data-rating="2">2</button>
+            <button class="rating-button" data-rating="3">3</button>
+            <button class="rating-button" data-rating="4">4</button>
+            <button class="rating-button" data-rating="5">5</button>
+        </div>
+        <button id="submit-button">Submit Rating</button>
+        <div id="progress">1/20</div>
+    </div>
+
+    <script>
+        let currentImage = 1;
+        const totalImages = 20;
+        const responses = [];
+        let currentRating = null;
+        
+        const displayedImage = document.getElementById('displayedImage');
+        const ratingButtons = document.querySelectorAll('.rating-button');
+        const submitButton = document.getElementById('submit-button');
+        const progressDisplay = document.getElementById('progress');
+
+        function updateImage() {
+            if (currentImage <= totalImages) {
+                // Force browser to reload the image by adding a timestamp
+                displayedImage.src = `img/${currentImage}.jpg?t=${new Date().getTime()}`;
+                progressDisplay.textContent = `${currentImage}/${totalImages}`;
+                // Reset rating buttons
+                ratingButtons.forEach(button => button.classList.remove('selected'));
+                submitButton.classList.remove('active');
+                currentRating = null;
+            } else {
+                // All images have been processed
+                displayedImage.style.display = 'none';
+                document.querySelector('.rating-container').style.display = 'none';
+                submitButton.style.display = 'none';
+                progressDisplay.textContent = 'Complete!';
+                console.log('Final responses:', responses);
+                // TO DATABASE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            }
+        }
+
+        function handleResponse() {
+            responses.push({
+                imageNumber: currentImage,
+                rating: currentRating
+            });
+            currentImage++;
+            updateImage();
+        }
+
+        // Add event listeners to rating buttons
+        ratingButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove selected class from all buttons
+                ratingButtons.forEach(btn => btn.classList.remove('selected'));
+                // Add selected class to clicked button
+                button.classList.add('selected');
+                currentRating = parseInt(button.dataset.rating);
+                submitButton.classList.add('active');
+            });
+        });
+
+        // Add event listener to submit button
+        submitButton.addEventListener('click', () => {
+            if (currentRating !== null) {
+                handleResponse();
+            }
+        });
+    </script>
+</body>
+</html>

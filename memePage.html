@@ -88,6 +88,75 @@
         #submit-button.active {
             display: block;
         }
+
+        #results {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #final-humor-code {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 20px 0;
+            letter-spacing: 8px;
+        }
+
+        .humor-code-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .humor-code {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            width: 120px;
+        }
+
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .name {
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        #humor-description {
+            margin: 20px 0;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        #share-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #share-button:hover {
+            background-color: #7b1fa2;
+        }
+
     </style>
 </head>
 <body>
@@ -103,12 +172,20 @@
             <button class="rating-button" data-rating="5">5</button>
         </div>
         <button id="submit-button">Submit Rating</button>
-        <div id="progress">1/20</div>
+        <div id="progress">1/5</div>
+    </div>
+
+    <div id="results">
+        <h1>Your Humor Profile</h1>
+        <div id="final-humor-code"></div>
+        <div class="humor-code-container" id="humor-codes-container"></div>
+        <div id="humor-description"></div>
+        <button id="share-button">Share My Humor Code</button>
     </div>
 
     <script>
         let currentImage = 1;
-        const totalImages = 20;
+        const totalImages = 5;
         const responses = [];
         let currentRating = null;
         
@@ -165,5 +242,7 @@
             }
         });
     </script>
+
 </body>
 </html>
+  

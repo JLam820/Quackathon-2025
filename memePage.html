@@ -19,8 +19,8 @@
 
         .container {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
             gap: 20px;
         }
 
@@ -38,30 +38,29 @@
             object-fit: contain;
         }
 
-        .button {
-            font-size: 48px;
-            padding: 20px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            width: 100px;
-            height: 100px;
+        .rating-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
+            gap: 10px;
         }
 
-        .button:hover {
+        .rating-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #e3f2fd;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .rating-button:hover {
             transform: scale(1.1);
+            background-color: #bbdefb;
         }
 
-        .cross-button {
-            background-color: #ffebee;
-        }
-
-        .tick-button {
-            background-color: #e8f5e9;
+        .rating-button.selected {
+            background-color: #2196f3;
+            color: white;
         }
 
         #progress {
@@ -69,26 +68,53 @@
             font-size: 18px;
             font-family: Arial, sans-serif;
         }
+
+        #submit-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #submit-button:hover {
+            background-color: #45a049;
+        }
+
+        #submit-button.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <button id="crossButton" class="button cross-button">❌</button>
         <div class="image-container">
             <img id="displayedImage" src="img/1.jpg" alt="Image">
         </div>
-        <button id="tickButton" class="button tick-button">✅</button>
+        <div class="rating-container">
+            <button class="rating-button" data-rating="1">1</button>
+            <button class="rating-button" data-rating="2">2</button>
+            <button class="rating-button" data-rating="3">3</button>
+            <button class="rating-button" data-rating="4">4</button>
+            <button class="rating-button" data-rating="5">5</button>
+        </div>
+        <button id="submit-button">Submit Rating</button>
+        <div id="progress">1/20</div>
     </div>
-    <div id="progress">1/20</div>
 
     <script>
         let currentImage = 1;
         const totalImages = 20;
         const responses = [];
+        let currentRating = null;
         
         const displayedImage = document.getElementById('displayedImage');
-        const crossButton = document.getElementById('crossButton');
-        const tickButton = document.getElementById('tickButton');
+        const ratingButtons = document.querySelectorAll('.rating-button');
+        const submitButton = document.getElementById('submit-button');
         const progressDisplay = document.getElementById('progress');
 
         function updateImage() {
@@ -96,28 +122,48 @@
                 // Force browser to reload the image by adding a timestamp
                 displayedImage.src = `img/${currentImage}.jpg?t=${new Date().getTime()}`;
                 progressDisplay.textContent = `${currentImage}/${totalImages}`;
+                // Reset rating buttons
+                ratingButtons.forEach(button => button.classList.remove('selected'));
+                submitButton.classList.remove('active');
+                currentRating = null;
             } else {
                 // All images have been processed
                 displayedImage.style.display = 'none';
-                crossButton.style.display = 'none';
-                tickButton.style.display = 'none';
+                document.querySelector('.rating-container').style.display = 'none';
+                submitButton.style.display = 'none';
                 progressDisplay.textContent = 'Complete!';
                 console.log('Final responses:', responses);
-                // TO DATABASE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                // TO DATABASE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             }
         }
 
-        function handleResponse(response) {
+        function handleResponse() {
             responses.push({
                 imageNumber: currentImage,
-                response: response
+                rating: currentRating
             });
             currentImage++;
             updateImage();
         }
 
-        crossButton.addEventListener('click', () => handleResponse('cross'));
-        tickButton.addEventListener('click', () => handleResponse('tick'));
+        // Add event listeners to rating buttons
+        ratingButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove selected class from all buttons
+                ratingButtons.forEach(btn => btn.classList.remove('selected'));
+                // Add selected class to clicked button
+                button.classList.add('selected');
+                currentRating = parseInt(button.dataset.rating);
+                submitButton.classList.add('active');
+            });
+        });
+
+        // Add event listener to submit button
+        submitButton.addEventListener('click', () => {
+            if (currentRating !== null) {
+                handleResponse();
+            }
+        });
     </script>
 </body>
 </html>

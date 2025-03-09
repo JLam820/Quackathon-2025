@@ -73,15 +73,19 @@ def login():
         if user : 
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('meme'))
+                return redirect(url_for('connections'))
     
     return render_template('login.html',form=form)
 
-@app.route('/meme')
+@app.route('/memePage')
 @login_required
-def meme():
-    return render_template('meme.html')
+def memePage():
+    return render_template('memePage.html')
 
+@app.route('/connections')
+@login_required
+def connections():
+    return render_template('connections.html')
 
 @app.route('/logout', methods = {'GET', 'POST'})
 @login_required
@@ -98,17 +102,17 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('meme'))
+        return redirect(url_for('memePage'))
     
     return render_template('register.html',form=form)
 
-@app.route('/humourtype', methods=['POST'])
-def save_humour():
-    # Get the array from the form data and parse it back from JSON
-    user_humour = request.form.get('humour')
+# @app.route('/humourtype', methods=['POST'])
+# def save_humour():
+#     # Get the array from the form data and parse it back from JSON
+#     user_humour = request.form.get('humour')
 
-    # Send a response back to the client
-    return jsonify({"status": "success", "received_array": my_array})
+#     # Send a response back to the client
+#     return jsonify({"status": "success", "received_array": my_array})
 
 
 if __name__ == "__main__":

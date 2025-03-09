@@ -34,7 +34,6 @@ class User(db.Model, UserMixin):
     humor=db.Column(db.String[80], default="xxx") #allow to be empty!
 
 
-
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Password"})
@@ -42,7 +41,7 @@ class RegisterForm(FlaskForm):
     course = StringField(validators=[InputRequired()], render_kw={"placeholder":"Course"})
     # socials = StringField(validators=[InputRequired()], render_kw={"placeholder":"Social Media"})
     # gender = StringField(validators=[InputRequired()], render_kw={"placeholder":"Gender"})
-    # age = StringField(validators=[InputRequired()], render_kw={"placeholder":"Social Media"})
+    # age = StringField(validators=[InputRequired()], render_kw={"placeholder":"Age"})
 
     submit = SubmitField("Register")
 
@@ -67,6 +66,7 @@ def create_db():
     with app.app_context():
         db.create_all()  # Creates tables based on the models
 
+# First Page
 @app.route('/')
 def main():
     return render_template('main.html')
@@ -85,7 +85,7 @@ def login():
     return render_template('login.html',form=form)
 
 @app.route('/memePage')
-@login_required
+# @login_required
 def memePage():
     return render_template('memePage.html')
 
@@ -114,6 +114,7 @@ def register():
 
         return redirect(url_for('memePage')) ### wtf
     
+    # go to register the first time 
     return render_template('register.html',form=form)
 
 # Saving the humor hehe 

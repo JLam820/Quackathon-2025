@@ -176,26 +176,6 @@ async function saveHumor(humorCode) {
   }
 }
 
-//////////////////?????????????
-function match_humor(){
-  document.getElementById('getDataButton').addEventListener('click', function() {
-    // Send GET request to Flask
-    fetch('/matchHumor')
-        .then(response => response.json())  // Parse JSON from Flask response
-        .then(data => {
-            // Display the data on the page
-            console.log(data);  // Prints the entire JSON object to the console
-
-            // document.getElementById('response').innerText = 
-            //     `Message: ${data.message}, Status: ${data.status}`;
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            document.getElementById('response').innerText = 'Error fetching data from Flask.';
-        });
-  })};
-
-
 // Show final results
 function showResults() {
     // Get top 3 categories

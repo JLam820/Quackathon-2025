@@ -40,6 +40,9 @@ class RegisterForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Password"})
     accom = StringField(validators=[InputRequired()], render_kw={"placeholder":"Accomodation"})
     course = StringField(validators=[InputRequired()], render_kw={"placeholder":"Course"})
+    # socials = StringField(validators=[InputRequired()], render_kw={"placeholder":"Social Media"})
+    # gender = StringField(validators=[InputRequired()], render_kw={"placeholder":"Gender"})
+    # age = StringField(validators=[InputRequired()], render_kw={"placeholder":"Social Media"})
 
     submit = SubmitField("Register")
 
@@ -147,7 +150,6 @@ def match_humor():
     matching_users = [user for user in matching_users if user.id != current_user.id]
 
     # return render_template('connections.html', users=matching_users)
-
 
      # Prepare the data to return as JSON
     users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]

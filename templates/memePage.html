@@ -5,6 +5,8 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Image Rating</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="memePage.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -211,11 +213,10 @@
                 submitButton.style.display = 'none';
                 progressDisplay.textContent = 'Complete!';
                 console.log('Final responses:', responses);
-                //////////////////?????????????
+                
+                showResults();
                 <a href="{{url_for('connections')}}" class="login-btn">Connections</a>
 
-                /////////////////
-                // TO DATABASE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             }
         }
 

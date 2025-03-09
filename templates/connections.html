@@ -68,6 +68,28 @@
     </style>
 </head>
 <body>
+    <script>
+        function match_humor(){ document.getElementById('getDataButton').addEventListener('click', function() {
+    // Send GET request to Flask
+    fetch('/matchHumor')
+        .then(response => response.json())  // Parse JSON from Flask response
+        .then(data => {
+            // Display the data on the page
+            console.log(data);  // Prints the entire JSON object to the console
+
+            // document.getElementById('response').innerText = 
+            //     `Message: ${data.message}, Status: ${data.status}`;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById('response').innerText = 'Error fetching data from Flask.';
+        });
+  })};
+
+    window.onload = match_humor;
+
+    </script>
+
     <div class="header">
         <div class="user-info">
             <div class="info-box">
@@ -75,16 +97,13 @@
                 <div id="username">{{ username }}</div>
             </div>
             <div class="info-box">
-                <strong>Humor Type:</strong>
+                <strong>MemeBTI:</strong>
                 <div id="humorType">{{ humor_type }}</div>
             </div>
         </div>
-        <button class="logout-btn">Log Out</button>
+        <a href="{{url_for('logout')}}" class="login-btn">Logout</a>
     </div>
 
-    <button onClick="match_humor()">gen connections</button>
-
-    <div id="response"></div>
 
     <!-- ??????????????????????????? -->
 
@@ -104,8 +123,6 @@
 
     </div>
 
-
-    
 
 </body>
 </html>

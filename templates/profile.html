@@ -9,31 +9,38 @@
 
 <h1>Users List</h1>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Course</th>
-            <th>Age</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.socials }}</td>
-            <td>{{ user.id }}</td>
-            <td>{{ user.accom }}</td>
-            <td>{{ user.course }}</td>
-            <td>{{ user.socials }}</td>
-            <td>{{ user.humor }}</td>
-            <td>{{ user.gender }}</td>
-            <td>{{ user.age }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+ <div class="content-area">
+        <p1>Possible Connections</p1>
+        <br>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Course</th>
+                    <th>Accom</th>
+                    <th>Humor</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>        <!-- Username -->
+                    <td>{{ user.course }}</td>          <!-- Course -->
+                    <td>{{ user.accom }}</td>           <!-- Accom -->
+                    <td>{{ user.humor }}</td>           <!-- Humor -->
+                    <td>{{ user.gender }}</td>          <!-- Gender -->
+                    <td>{{ user.age }}</td>  
+ 
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+
 
 </body>
 </html>

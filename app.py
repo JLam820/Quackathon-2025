@@ -101,7 +101,7 @@ def show_profile():
     users = User.query.filter_by(humor=current_user_humor).all()
 
     # Render the page with filtered users
-    return render_template('connections.html', users=users)
+    return render_template('profile.html', users=users)
 
 @app.route('/connections')
 @login_required

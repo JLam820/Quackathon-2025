@@ -336,14 +336,6 @@ function saveHumorHTML() {
         }
         else {
             // All images have been processed
-            showResults();
-            saveHumorHTML();
-
-            // function saveHumorHTML() {
-            //     document.getElementById('humorPass').value = humorCode;
-            //     document.getElementById('humorForm').submit();
-            // }        
-
             displayedImage.style.display = 'none';
             document.querySelector('.rating-container').style.display = 'none';
             submitButton.style.display = 'none';
@@ -351,7 +343,14 @@ function saveHumorHTML() {
             progressDisplay.style.textAlign = 'center';
             progressDisplay.style.fontSize = '64px';
             console.log('Final responses:', responses);
-            alert("end");
+            
+            setTimeout(function() {
+                showResults();
+                saveHumorHTML();
+            }, 3000);
+
+
+        
             
         }
     }

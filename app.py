@@ -1,12 +1,14 @@
-from flask import Flask, render_template, url_for, redirect, jsonify
+from flask import Flask, render_template, url_for, redirect, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app) #for front end comms
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'  # Use a SQLite database
 app.config['SECRET_KEY'] = 'thesecretkeytobechanged'
@@ -60,6 +62,10 @@ def create_db():
     with app.app_context():
         db.create_all()  # Creates tables based on the models
 
+# @app.route('/img/<path:filename>')
+# def custom_static(filename):
+#     return send_from_directory('/img/', filename)
+
 @app.route('/')
 def main():
     return render_template('main.html')
@@ -107,13 +113,13 @@ def register():
     
     return render_template('register.html',form=form)
 
-@app.route('/saveHumor', methods=['POST'])
-def save_humour():
-    # Get the array from the form data and parse it back from JSON
-    user_humour = request.form.get('humour')
+# @app.route('/saveHumor', methods=['POST'])
+# def save_humour():
+#     # Get the array from the form data and parse it back from JSON
+#     user_humour = request.form.get('humour')
 
-    # Send a response back to the client
-    return jsonify({"status": "success", "received_array": my_array})
+#     # Send a response back to the client
+#     return jsonify({"status": "success", "received_array": my_array})
 
 
 if __name__ == "__main__":

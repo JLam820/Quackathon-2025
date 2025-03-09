@@ -95,12 +95,13 @@ def memePage():
 
 @app.route('/profile')
 def show_profile():
-    # Query all users from the database
-    users = User.query.all()
+    current_user_humor = current_user.humor # Assuming 'humor_type' is stored in User model
 
-    # Pass the users data to the HTML template
-    return render_template('profile.html', users=users)
+    # Query users with the same humor type
+    users = User.query.filter_by(humor=current_user_humor).all()
 
+    # Render the page with filtered users
+    return render_template('connections.html', users=users)
 
 @app.route('/connections')
 @login_required

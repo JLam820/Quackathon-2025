@@ -5,7 +5,6 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Image Rating</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <!-- <script src="memePage.js"></script> -->
 
     <style>
         body {
@@ -178,12 +177,9 @@
         <div id="progress">1/5</div>
     </div>
 
-
 </body>
 
 <script>
-
-
 
 function generateRandomMemeBTI() {
     // Array of possible letters
@@ -291,13 +287,12 @@ const resultsDiv = document.getElementById('results');
 // const finalHumorCode = document.getElementById('final-humor-code'); // or another valid selector
 // const humorCodesContainer = document.getElementById('humor-codes-container'); // or another valid selector
 
-
 const finalHumorCode = ""; // or another valid selector
 const humorCodesContainer = ""; // or another valid selector
 
-// const humorDescription = document.getElementById('humor-description');
+const humorDescription = document.getElementById('humor-description');
 
-const humorDescription = "";
+// const humorDescription = "";
 
 const shareButton = document.getElementById('share-button');
 
@@ -369,32 +364,31 @@ const shareButton = document.getElementById('share-button');
     updateImage();
 
 
-//astha
-async function saveHumor(humorCode) {
+// //astha
+// async function saveHumor(humorCode) {
 
-  try {
-      const response = await fetch("http://127.0.0.1:5000/saveHumor", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ text: humorCode })  // Send the string as JSON
-      });
+//   try {
+//       const response = await fetch("http://127.0.0.1:5000/saveHumor", {
+//           method: "POST",
+//           headers: {
+//               "Content-Type": "application/json"
+//           },
+//           body: JSON.stringify({ text: humorCode })  // Send the string as JSON
+//       });
 
-      // Check if the response was successful
-      if (!response.ok) {
-          throw new Error('Failed to save the string');
-      }
+//       // Check if the response was successful
+//       if (!response.ok) {
+//           throw new Error('Failed to save the string');
+//       }
 
-      // Get the response data
-      const result = await response.json();
-      console.log(result);  // Handle the result
-  } catch (error) {
-      console.error("Error:", error);
-  }
-}
+//       // Get the response data
+//       const result = await response.json();
+//       console.log(result);  // Handle the result
+//   } catch (error) {
+//       console.error("Error:", error);
+//   }
+// }
 
-//// sherise
     // Get top N categories based on scores
     function getTopCategories(n = 3) {
     // Sort categories by score (descending)
@@ -412,10 +406,6 @@ function showResults() {
     const topCategories = getTopCategories(3);
     const humorCode = topCategories.join('');
 
-    alert(topCategories);
-
-    alert(humorCode);
-
     // SAVE HUMORCODE TO DATABASE - SENDING TO APP.PY
     try {
     saveHumor(humorCode);
@@ -423,12 +413,6 @@ function showResults() {
     console.error("Error saving humor code:", error);
 }
     finalHumorCode = humorCode;
-
-    alert(finalHumorCode);
-    alert(humorCode);
-
-
-    alert("397");
     
     // Create elements for each category
     // humorCodesContainer.innerHTML = '';
@@ -446,38 +430,21 @@ function showResults() {
     //     humorCodesContainer.appendChild(categoryEl);
     // });
 
-    alert("414 ");
 
     // Create description
     let description = "You have a unique sense of humor that combines:\n";
-    alert(description);
 
     topCategories.forEach(category => {
         description += `• ${humorCategories[category].name}: ${humorCategories[category].description}\n`;
     });
 
-    alert(description);
-
-    alert(topCategories)
-
-
     humorDescription = description.replace(/\n/g, '<br>');
-    
-    alert("humorDescription ");
 
-    // Show results
-    // resultsDiv.style.display = 'flex';
-    
-    // Save humor code to localStorage (for potential future use)
-    // localStorage.setItem('userHumorCode', humorCode);
-    // localStorage.setItem('userHumorScores', JSON.stringify(userScores));
-    // localStorage.setItem('userHumorResponses', JSON.stringify(responses));
+    document.getElementById('humor-description').innerHTML = humorDescription;
 
-    // console.log('Final scores:', userScores);
-    // console.log('Humor code:', humorCode);
-    // console.log('All responses:', responses);
-
-    alert("finished");
+    console.log('Final scores:', userScores);
+    console.log('Humor code:', humorCode);
+    console.log('All responses:', responses);
 
     return redirect(url_for('connections'));
 

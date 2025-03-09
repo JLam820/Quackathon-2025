@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, redirect, jsonify, send_from_
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -31,6 +31,10 @@ class User(db.Model, UserMixin):
     password=db.Column(db.String[80], nullable=False)
     accom=db.Column(db.String[80], nullable=False)
     course=db.Column(db.String[80], nullable=False)
+    socials = db.Column(db.String[80], nullable=False)
+    gender = db.Column(db.String[80], nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+
     humor=db.Column(db.String[80], default="xxx") #allow to be empty!
 
 
@@ -39,9 +43,9 @@ class RegisterForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder":"Password"})
     accom = StringField(validators=[InputRequired()], render_kw={"placeholder":"Accomodation"})
     course = StringField(validators=[InputRequired()], render_kw={"placeholder":"Course"})
-    # socials = StringField(validators=[InputRequired()], render_kw={"placeholder":"Social Media"})
-    # gender = StringField(validators=[InputRequired()], render_kw={"placeholder":"Gender"})
-    # age = StringField(validators=[InputRequired()], render_kw={"placeholder":"Age"})
+    socials = StringField(validators=[InputRequired()], render_kw={"placeholder":"Social Media"})
+    gender = StringField(validators=[InputRequired()], render_kw={"placeholder":"Gender"})
+    age = IntegerField(validators=[InputRequired()], render_kw={"placeholder":"Age"})
 
     submit = SubmitField("Register")
 
@@ -89,6 +93,14 @@ def login():
 def memePage():
     return render_template('memePage.html')
 
+@app.route('/profile')
+def show_profile():
+    # Query all users from the database
+    users = User.query.all()
+
+    # Pass the users data to the HTML template
+    return render_template('profile.html', users=users)
+
 
 @app.route('/connections')
 @login_required
@@ -108,7 +120,7 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, password=hashed_password, 
-                    accom = form.accom.data, course = form.course.data) #should auto add the humor 
+                    accom = form.accom.data, course = form.course.data, socials = form.socials.data, gender = form.gender.data, age = form.age.data) #should auto add the humor 
         db.session.add(new_user)
         db.session.commit()
 
@@ -121,7 +133,7 @@ def register():
 @app.route('/saveHumor', methods=['POST'])
 @login_required
 def save_humor():
-    data = request.json  # Get JSON data from the request
+    data = request.get_json()  # Get JSON data from the request
 
     # Check if the 'humor' key is in the JSON data
     if not data or "humor" not in data:
@@ -135,27 +147,6 @@ def save_humor():
 
     # Return a success response with the updated humor value
     return jsonify({"message": "Humor value updated successfully!", "humor": current_user.humor}), 200
-
-####################?????????????
-@app.route('/matchHumor', methods=['GET'])
-@login_required
-def match_humor():
-    # Get the current user's humor value
-    # current_user_humor = current_user.humor
-    current_user_humor = "xxx"
-
-    # Query the database for users with the same humor value (excluding the current user)
-    matching_users = User.query.filter_by(humor=current_user_humor).all()
-
-    # Optionally, filter out the current user from the results
-    matching_users = [user for user in matching_users if user.id != current_user.id]
-
-    # return render_template('connections.html', users=matching_users)
-
-     # Prepare the data to return as JSON
-    users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]
-
-    return jsonify(users_data)
 
 if __name__ == "__main__":
     create_db()

@@ -132,6 +132,7 @@ def save_humor():
     # Return a success response with the updated humor value
     return jsonify({"message": "Humor value updated successfully!", "humor": current_user.humor}), 200
 
+####################?????????????
 @app.route('/matchHumor', methods=['GET'])
 @login_required
 def match_humor():
@@ -145,13 +146,13 @@ def match_humor():
     # Optionally, filter out the current user from the results
     matching_users = [user for user in matching_users if user.id != current_user.id]
 
-    return render_template('connections.html', users=matching_users)
+    # return render_template('connections.html', users=matching_users)
 
 
      # Prepare the data to return as JSON
-    # users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]
+    users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]
 
-    # return jsonify(users_data)
+    return jsonify(users_data)
 
 if __name__ == "__main__":
     create_db()

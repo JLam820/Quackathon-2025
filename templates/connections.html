@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="memePage.js"></script>
+
     <title>My Connections</title>
     <style>
         body {
@@ -79,11 +81,17 @@
         </div>
         <button class="logout-btn">Log Out</button>
     </div>
-    
+
+    <button onClick="match_humor()">gen connections</button>
+
+    <div id="response"></div>
+
+    <!-- ??????????????????????????? -->
+
     <div class="content-area">
         <p1>Possible Connections</p1>
         <br>
-        
+
          <!-- Connection cards will be dynamically added here -->
          {% for connection in connections %}
          <div class="connection-card">
@@ -94,19 +102,10 @@
          </div>
          {% endfor %} 
 
+    </div>
 
-        {% if users %}
-        <ul>
-            {% for user in users %}
-                <li>{{ user.username }} - Humor: {{ user.humor }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No users with the same humor code were found.</p>
-    {% endif %}
 
     
-    </div>
 
 </body>
 </html>

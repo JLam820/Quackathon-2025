@@ -152,11 +152,39 @@ function getTopCategories(n = 3) {
     return sortedCategories.slice(0, n);
 }
 
+async function saveHumor(humorCode) {
+
+  try {
+      const response = await fetch("http://127.0.0.1:5000/saveHumor", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text: humorCode })  // Send the string as JSON
+      });
+
+      // Check if the response was successful
+      if (!response.ok) {
+          throw new Error('Failed to save the string');
+      }
+
+      // Get the response data
+      const result = await response.json();
+      console.log(result);  // Handle the result
+  } catch (error) {
+      console.error("Error:", error);
+  }
+}
+
+
 // Show final results
 function showResults() {
     // Get top 3 categories
     const topCategories = getTopCategories(3);
     const humorCode = topCategories.join('');
+
+    // SAVE HUMORCODE TO DATABASE - SENDING TO APP.PY
+    sendStringToServer(humorCode);
     
     // Display the code
     finalHumorCode.textContent = humorCode;

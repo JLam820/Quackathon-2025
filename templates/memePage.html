@@ -162,7 +162,7 @@
 <body>
     <div class="container">
         <div class="image-container">
-            <img id="displayedImage" src="../img/1.jpg" alt="Image">
+            <img id="displayedImage" src="{{ url_for('static', filename='img/1.jpg') }}" alt="Image">
         </div>
         <div class="rating-container">
             <button class="rating-button" data-rating="1">1</button>
@@ -196,8 +196,8 @@
 
         function updateImage() {
             if (currentImage <= totalImages) {
-                // Force browser to reload the image by adding a timestamp
-                displayedImage.src = `img/${currentImage}.jpg?t=${new Date().getTime()}`;
+                // Use url_for to generate the correct static file URL
+                displayedImage.src = `{{ url_for('static', filename='img/${currentImage}.jpg') }}?t=${new Date().getTime()}`;
                 progressDisplay.textContent = `${currentImage}/${totalImages}`;
                 // Reset rating buttons
                 ratingButtons.forEach(button => button.classList.remove('selected'));
@@ -210,9 +210,9 @@
                 submitButton.style.display = 'none';
                 progressDisplay.textContent = 'Complete!';
                 console.log('Final responses:', responses);
-                // TO DATABASE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             }
         }
+
 
         function handleResponse() {
             responses.push({

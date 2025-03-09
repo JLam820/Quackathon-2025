@@ -182,6 +182,21 @@
 </body>
 
 <script>
+
+
+
+function generateRandomMemeBTI() {
+    // Array of possible letters
+    const letters = ['A', 'D', 'W', 'S', 'L', 'P', 'C', 'R'];
+    
+    // Shuffle array and take first 3 elements
+    const shuffled = [...letters]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+    
+    // Join the letters together
+    return shuffled.join('');
+}
 // Meme data with categorizations
 const memeData = [
     {
@@ -303,7 +318,9 @@ const shareButton = document.getElementById('share-button');
             displayedImage.style.display = 'none';
             document.querySelector('.rating-container').style.display = 'none';
             submitButton.style.display = 'none';
-            progressDisplay.textContent = 'Complete!';
+            progressDisplay.textContent = 'Your MemeBTI is: ' + generateRandomMemeBTI();
+            progressDisplay.style.textAlign = 'center';
+            progressDisplay.style.fontSize = '64px';
             console.log('Final responses:', responses);
             showResults();
         }

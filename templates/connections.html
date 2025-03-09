@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="memePage.js"></script>
 
     <title>My Connections</title>
     <style>
@@ -69,24 +68,7 @@
 </head>
 <body>
     <script>
-        function match_humor(){ document.getElementById('getDataButton').addEventListener('click', function() {
-    // Send GET request to Flask
-    fetch('/matchHumor')
-        .then(response => response.json())  // Parse JSON from Flask response
-        .then(data => {
-            // Display the data on the page
-            console.log(data);  // Prints the entire JSON object to the console
 
-            // document.getElementById('response').innerText = 
-            //     `Message: ${data.message}, Status: ${data.status}`;
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            document.getElementById('response').innerText = 'Error fetching data from Flask.';
-        });
-  })};
-
-    window.onload = match_humor;
 
     </script>
 
@@ -111,15 +93,31 @@
         <p1>Possible Connections</p1>
         <br>
 
-         <!-- Connection cards will be dynamically added here -->
-         {% for connection in connections %}
-         <div class="connection-card">
-             <h3>{{ connection.username }}</h3>
-             <p>Humor Type: {{ connection.humor_type }}</p>
-             <p>Match Score: {{ connection.match_score }}%</p>
-             <!-- Add more connection details as needed -->
-         </div>
-         {% endfor %} 
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Course</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.socials }}</td>
+                    <!-- <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.accom }}</td>
+                    <td>{{ user.course }}</td>
+                    <td>{{ user.socials }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>{{ user.age }}</td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
     </div>
 

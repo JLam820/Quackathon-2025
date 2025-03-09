@@ -160,6 +160,8 @@
 
     </style>
 </head>
+
+
 <body>
     
     <div class="container">
@@ -175,7 +177,16 @@
         </div>
         <button id="submit-button">Submit Rating</button>
         <div id="progress">1/5</div>
+
+        <div id="humor-description"></div>
     </div>
+
+    <form id="humorForm" action="/saveHumor" method="POST">
+        <input type="hidden" name="humorPass" id="humorPass">
+        
+        <!-- Button that triggers the JS function to update the value and submit the form -->
+        <button type="button" onclick="saveHumorHTML()">Update and Submit</button>
+    </form>
 
 </body>
 
@@ -277,7 +288,6 @@ const memeData = [
     }
   };
 
-
 const displayedImage = document.getElementById('displayedImage');
 const ratingButtons = document.querySelectorAll('.rating-button');
 const submitButton = document.getElementById('submit-button');
@@ -287,15 +297,22 @@ const resultsDiv = document.getElementById('results');
 // const finalHumorCode = document.getElementById('final-humor-code'); // or another valid selector
 // const humorCodesContainer = document.getElementById('humor-codes-container'); // or another valid selector
 
-const finalHumorCode = ""; // or another valid selector
-const humorCodesContainer = ""; // or another valid selector
+var humorCode = ""; // or another valid selector
+
+var finalHumorCode = ""; // or another valid selector
+var humorCodesContainer = ""; // or another valid selector
 
 const humorDescription = document.getElementById('humor-description');
 
-// const humorDescription = "";
-
 const shareButton = document.getElementById('share-button');
 
+function saveHumorHTML() {
+    document.getElementById('humorPass').value = humorCode;
+    document.getElementById('humorForm').submit();
+    
+    window.location.href = "{{ url_for('connections') }}";
+
+}
 
     document.addEventListener("DOMContentLoaded", function () {
         let currentImage = 1;
@@ -319,6 +336,14 @@ const shareButton = document.getElementById('share-button');
         }
         else {
             // All images have been processed
+            showResults();
+            saveHumorHTML();
+
+            // function saveHumorHTML() {
+            //     document.getElementById('humorPass').value = humorCode;
+            //     document.getElementById('humorForm').submit();
+            // }        
+
             displayedImage.style.display = 'none';
             document.querySelector('.rating-container').style.display = 'none';
             submitButton.style.display = 'none';
@@ -326,7 +351,6 @@ const shareButton = document.getElementById('share-button');
             progressDisplay.style.textAlign = 'center';
             progressDisplay.style.fontSize = '64px';
             console.log('Final responses:', responses);
-            showResults();
             alert("end");
             
         }
@@ -363,32 +387,6 @@ const shareButton = document.getElementById('share-button');
 
     updateImage();
 
-
-// //astha
-// async function saveHumor(humorCode) {
-
-//   try {
-//       const response = await fetch("http://127.0.0.1:5000/saveHumor", {
-//           method: "POST",
-//           headers: {
-//               "Content-Type": "application/json"
-//           },
-//           body: JSON.stringify({ text: humorCode })  // Send the string as JSON
-//       });
-
-//       // Check if the response was successful
-//       if (!response.ok) {
-//           throw new Error('Failed to save the string');
-//       }
-
-//       // Get the response data
-//       const result = await response.json();
-//       console.log(result);  // Handle the result
-//   } catch (error) {
-//       console.error("Error:", error);
-//   }
-// }
-
     // Get top N categories based on scores
     function getTopCategories(n = 3) {
     // Sort categories by score (descending)
@@ -403,33 +401,16 @@ const shareButton = document.getElementById('share-button');
 // Show final results
 function showResults() {
     // Get top 3 categories
-    const topCategories = getTopCategories(3);
-    const humorCode = topCategories.join('');
+    var topCategories = getTopCategories(3);
+    var humorCode = topCategories.join('');
 
-    // SAVE HUMORCODE TO DATABASE - SENDING TO APP.PY
-    try {
-    saveHumor(humorCode);
-} catch (error) {
-    console.error("Error saving humor code:", error);
-}
+//     // SAVE HUMORCODE TO DATABASE - SENDING TO APP.PY
+//     try {
+//     saveHumor(humorCode);
+// } catch (error) {
+//     console.error("Error saving humor code:", error);
+// }
     finalHumorCode = humorCode;
-    
-    // Create elements for each category
-    // humorCodesContainer.innerHTML = '';
-    ///////////////////
-    // topCategories.forEach(category => {
-    //     const categoryEl = document.createElement('div');
-    //     categoryEl.className = 'humor-code';
-    //     categoryEl.style.backgroundColor = humorCategories[category].color;
-        
-    //     categoryEl.innerHTML = `
-    //         <span class="code">${category}</span>
-    //         <span class="name">${humorCategories[category].name}</span>
-    //     `;
-        
-    //     humorCodesContainer.appendChild(categoryEl);
-    // });
-
 
     // Create description
     let description = "You have a unique sense of humor that combines:\n";
@@ -438,7 +419,7 @@ function showResults() {
         description += `• ${humorCategories[category].name}: ${humorCategories[category].description}\n`;
     });
 
-    humorDescription = description.replace(/\n/g, '<br>');
+    document.getElementById('humor-description').innerHTML = description.replace(/\n/g, '<br>');
 
     document.getElementById('humor-description').innerHTML = humorDescription;
 
@@ -446,12 +427,12 @@ function showResults() {
     console.log('Humor code:', humorCode);
     console.log('All responses:', responses);
 
-    return redirect(url_for('connections'));
-
+    // window.location.href = "{{ url_for('connections') }}";
 
 }
 
-    });
+    }
+);
 
 
 

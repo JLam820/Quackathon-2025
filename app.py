@@ -133,11 +133,11 @@ def register():
 @app.route('/saveHumor', methods=['POST'])
 @login_required
 def save_humor():
-    data = request.get_json()  # Get JSON data from the request
-
-    # Check if the 'humor' key is in the JSON data
-    if not data or "humor" not in data:
-        return jsonify({"error": "Invalid data, humor field is required"}), 400
+    data = request.form.get('humorCode')  # Get JSON data from the request
+    print(data)
+    # # Check if the 'humor' key is in the JSON data
+    # if not data or "humor" not in data:
+    #     return jsonify({"error": "Invalid data, humor field is required"}), 400
     
     # Find the current user from the session
     current_user.humor = data["humor"]  # Update the humor value for the logged-in user
@@ -145,8 +145,23 @@ def save_humor():
     # Commit the changes to the database
     db.session.commit()
 
-    # Return a success response with the updated humor value
-    return jsonify({"message": "Humor value updated successfully!", "humor": current_user.humor}), 200
+    users = User.query.all()
+
+    # Pass the users data to the HTML template
+    return render_template('profile.html', users=users)
+
+    # # Return a success response with the updated humor value
+    # return ("message")
+
+@app.route('/commit', methods=['GET'])
+@login_required
+def commit():
+ # Query all users from the database
+    users = User.query.all()
+
+    # Pass the users data to the HTML template
+    return render_template('connections.html', users=users)
+
 
 if __name__ == "__main__":
     create_db()

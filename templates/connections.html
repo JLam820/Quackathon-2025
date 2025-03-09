@@ -3,10 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='connections.css') }}">
+    <title>My Connections</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .info-box {
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .content-area {
+            margin: 20px;
+            padding: 20px;
+            height: calc(100vh - 100px); /* Subtract header height */
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .connection-card {
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">
+        <div class="user-info">
+            <div class="info-box">
+                <strong>Username:</strong>
+                <div id="username">{{ username }}</div>
+            </div>
+            <div class="info-box">
+                <strong>Humor Type:</strong>
+                <div id="humorType">{{ humor_type }}</div>
+            </div>
+        </div>
+        <button class="logout-btn">Log Out</button>
+    </div>
     
+    <div class="content-area">
+        <p1>Possible Connections</p1>
+        <br>
+        <!-- Connection cards will be dynamically added here -->
+        {% for connection in connections %}
+        <div class="connection-card">
+            <h3>{{ connection.username }}</h3>
+            <p>Humor Type: {{ connection.humor_type }}</p>
+            <p>Match Score: {{ connection.match_score }}%</p>
+            <!-- Add more connection details as needed -->
+        </div>
+        {% endfor %}
+    </div>
+
 </body>
 </html>

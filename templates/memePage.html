@@ -310,7 +310,7 @@ function saveHumorHTML() {
     document.getElementById('humorPass').value = humorCode;
     document.getElementById('humorForm').submit();
     
-    window.location.href = "{{ url_for('connections') }}";
+    window.location.href = "{{ url_for('profile') }}";
 
 }
 
@@ -340,6 +340,7 @@ function saveHumorHTML() {
             document.querySelector('.rating-container').style.display = 'none';
             submitButton.style.display = 'none';
             progressDisplay.textContent = 'Your MemeBTI is: ' + generateRandomMemeBTI();
+
             progressDisplay.style.textAlign = 'center';
             progressDisplay.style.fontSize = '64px';
             console.log('Final responses:', responses);
@@ -347,7 +348,9 @@ function saveHumorHTML() {
             setTimeout(function() {
                 showResults();
                 saveHumorHTML();
-            }, 3000);
+                progressDisplay.textContent = 'Your MemeBTI is: ' + str(humorCode) + 'and description' + str(humorDescription);
+
+            }, 5000);
 
 
         

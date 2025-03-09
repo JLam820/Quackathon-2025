@@ -108,6 +108,11 @@ def show_profile():
 def connections():
     return render_template('connections.html')
 
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html')
+
 
 @app.route('/logout', methods = {'GET', 'POST'})
 @login_required

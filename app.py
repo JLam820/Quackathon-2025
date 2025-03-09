@@ -136,7 +136,8 @@ def save_humor():
 @login_required
 def match_humor():
     # Get the current user's humor value
-    current_user_humor = current_user.humor
+    # current_user_humor = current_user.humor
+    current_user_humor = "xxx"
 
     # Query the database for users with the same humor value (excluding the current user)
     matching_users = User.query.filter_by(humor=current_user_humor).all()
@@ -144,10 +145,13 @@ def match_humor():
     # Optionally, filter out the current user from the results
     matching_users = [user for user in matching_users if user.id != current_user.id]
 
-     # Prepare the data to return as JSON
-    users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]
+    return render_template('connections.html', users=matching_users)
 
-    return jsonify(users_data)
+
+     # Prepare the data to return as JSON
+    # users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]
+
+    # return jsonify(users_data)
 
 if __name__ == "__main__":
     create_db()

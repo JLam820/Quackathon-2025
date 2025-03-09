@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, url_for, redirect, jsonify, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -31,6 +31,8 @@ class User(db.Model, UserMixin):
     password=db.Column(db.String[80], nullable=False)
     accom=db.Column(db.String[80], nullable=False)
     course=db.Column(db.String[80], nullable=False)
+    humor=db.Column(db.String[80], default="xxx") #allow to be empty!
+
 
 
 class RegisterForm(FlaskForm):
@@ -61,10 +63,6 @@ def create_db():
     # Use the app context when creating the database
     with app.app_context():
         db.create_all()  # Creates tables based on the models
-
-# @app.route('/img/<path:filename>')
-# def custom_static(filename):
-#     return send_from_directory('/img/', filename)
 
 @app.route('/')
 def main():
@@ -105,7 +103,8 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password, accom = form.accom.data, course = form.course.data)
+        new_user = User(username=form.username.data, password=hashed_password, 
+                    accom = form.accom.data, course = form.course.data) #should auto?
         db.session.add(new_user)
         db.session.commit()
 
@@ -113,13 +112,41 @@ def register():
     
     return render_template('register.html',form=form)
 
+# ####
 # @app.route('/saveHumor', methods=['POST'])
-# def save_humour():
-#     # Get the array from the form data and parse it back from JSON
-#     user_humour = request.form.get('humour')
+# def save_humor():
+#     data = request.json  # Get JSON data from the request
+    
+#     # Check if 'text' is in the JSON data
+#     if not data or "text" not in data:
+#         return jsonify({"error": "Invalid data"}), 400
+    
+#     # Save to the database
+#     user_humor = User(content=data["text"])
+#     db.session.add(new_message)
+#     db.session.commit()
 
-#     # Send a response back to the client
-#     return jsonify({"status": "success", "received_array": my_array})
+#     # Return a success response
+#     return jsonify({"message": "String saved successfully!", "id": new_message.id}), 201
+
+@app.route('/saveHumor', methods=['POST'])
+@login_required
+def save_humor():
+    data = request.json  # Get JSON data from the request
+
+    # Check if the 'humor' key is in the JSON data
+    if not data or "humor" not in data:
+        return jsonify({"error": "Invalid data, humor field is required"}), 400
+    
+    # Find the current user from the session
+    current_user.humor = data["humor"]  # Update the humor value for the logged-in user
+    
+    # Commit the changes to the database
+    db.session.commit()
+
+    # Return a success response with the updated humor value
+    return jsonify({"message": "Humor value updated successfully!", "humor": current_user.humor}), 200
+
 
 
 if __name__ == "__main__":

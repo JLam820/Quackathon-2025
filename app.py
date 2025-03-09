@@ -87,6 +87,7 @@ def memePage():
 def connections():
     return render_template('connections.html')
 
+
 @app.route('/logout', methods = {'GET', 'POST'})
 @login_required
 def logout():
@@ -106,13 +107,13 @@ def register():
     
     return render_template('register.html',form=form)
 
-# @app.route('/humourtype', methods=['POST'])
-# def save_humour():
-#     # Get the array from the form data and parse it back from JSON
-#     user_humour = request.form.get('humour')
+@app.route('/saveHumor', methods=['POST'])
+def save_humour():
+    # Get the array from the form data and parse it back from JSON
+    user_humour = request.form.get('humour')
 
-#     # Send a response back to the client
-#     return jsonify({"status": "success", "received_array": my_array})
+    # Send a response back to the client
+    return jsonify({"status": "success", "received_array": my_array})
 
 
 if __name__ == "__main__":

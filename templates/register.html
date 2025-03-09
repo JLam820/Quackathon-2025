@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Back Button -->
+        <a href="{{url_for('main')}}" class="back-btn">Back</a>
+
+        <div class="container">
+            <!-- Left Section -->
+            <div class="left-section">
+                <a href="{{url_for('login')}}" class="login-btn">login if needed</a>
+                <div class="image-placeholder">
+                    <img src="img/signUp.jpg" alt="Sign Up Image" class="placeholder-image">
+                </div>
+                
+            </div>
+
+            <!-- Right Section -->
+            <div class="right-section">
+                <div class="signup-form">
+                    <h2>Sign Up</h2>
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        {{ form.username }}
+                        {{ form.password(class="form-control") }}
+                        {{ form.accom }}
+                        {{ form.course }}
+                        {{ form.submit() }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

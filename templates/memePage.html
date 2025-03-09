@@ -196,14 +196,15 @@
 
         function updateImage() {
             if (currentImage <= totalImages) {
-                // Use url_for to generate the correct static file URL
-                displayedImage.src = `{{ url_for('static', filename='img/${currentImage}.jpg') }}?t=${new Date().getTime()}`;
+                // Fix the URL construction
+                displayedImage.src = "{{ url_for('static', filename='img/') }}" + currentImage + ".jpg" + "?t=" + new Date().getTime();
                 progressDisplay.textContent = `${currentImage}/${totalImages}`;
                 // Reset rating buttons
                 ratingButtons.forEach(button => button.classList.remove('selected'));
                 submitButton.classList.remove('active');
                 currentRating = null;
-            } else {
+            }
+            else {
                 // All images have been processed
                 displayedImage.style.display = 'none';
                 document.querySelector('.rating-container').style.display = 'none';

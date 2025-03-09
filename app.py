@@ -86,6 +86,7 @@ def login():
 def memePage():
     return render_template('memePage.html')
 
+
 @app.route('/connections')
 @login_required
 def connections():
@@ -104,31 +105,15 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, password=hashed_password, 
-                    accom = form.accom.data, course = form.course.data) #should auto?
+                    accom = form.accom.data, course = form.course.data) #should auto add the humor 
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('memePage'))
+        return redirect(url_for('memePage')) ### wtf
     
     return render_template('register.html',form=form)
 
-# ####
-# @app.route('/saveHumor', methods=['POST'])
-# def save_humor():
-#     data = request.json  # Get JSON data from the request
-    
-#     # Check if 'text' is in the JSON data
-#     if not data or "text" not in data:
-#         return jsonify({"error": "Invalid data"}), 400
-    
-#     # Save to the database
-#     user_humor = User(content=data["text"])
-#     db.session.add(new_message)
-#     db.session.commit()
-
-#     # Return a success response
-#     return jsonify({"message": "String saved successfully!", "id": new_message.id}), 201
-
+# Saving the humor hehe 
 @app.route('/saveHumor', methods=['POST'])
 @login_required
 def save_humor():
@@ -147,7 +132,22 @@ def save_humor():
     # Return a success response with the updated humor value
     return jsonify({"message": "Humor value updated successfully!", "humor": current_user.humor}), 200
 
+@app.route('/matchHumor', methods=['GET'])
+@login_required
+def match_humor():
+    # Get the current user's humor value
+    current_user_humor = current_user.humor
 
+    # Query the database for users with the same humor value (excluding the current user)
+    matching_users = User.query.filter_by(humor=current_user_humor).all()
+
+    # Optionally, filter out the current user from the results
+    matching_users = [user for user in matching_users if user.id != current_user.id]
+
+     # Prepare the data to return as JSON
+    users_data = [{"id": user.id, "username": user.username, "humor": user.humor} for user in matching_users]
+
+    return jsonify(users_data)
 
 if __name__ == "__main__":
     create_db()

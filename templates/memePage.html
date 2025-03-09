@@ -183,6 +183,8 @@
         <button id="share-button">Share My Humor Code</button>
     </div>
 
+    <script src="memePage.js"></script>
+
     <script>
         let currentImage = 1;
         const totalImages = 5;
@@ -210,9 +212,8 @@
                 submitButton.style.display = 'none';
                 progressDisplay.textContent = 'Complete!';
                 console.log('Final responses:', responses);
+                showResults();
 
-                /////////////////
-                // TO DATABASE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             }
         }
 
